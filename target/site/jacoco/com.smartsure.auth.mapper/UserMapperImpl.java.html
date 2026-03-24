@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">auth-service</a> &gt; <a href="index.source.html" class="el_package">com.smartsure.auth.mapper</a> &gt; <span class="el_source">UserMapperImpl.java</span></div><h1>UserMapperImpl.java</h1><pre class="source lang-java linenums">package com.smartsure.auth.mapper;
+
+import com.smartsure.auth.dto.RegisterRequest;
+import com.smartsure.auth.dto.UserResponse;
+import com.smartsure.auth.entity.User;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2026-03-24T15:37:43+0530&quot;,
+    comments = &quot;version: 1.5.5.Final, compiler: javac, environment: Java 21.0.10 (Eclipse Adoptium)&quot;
+)
+@Component
+<span class="fc" id="L15">public class UserMapperImpl implements UserMapper {</span>
+
+    @Override
+    public UserResponse toResponse(User user) {
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        if ( user == null ) {</span>
+<span class="fc" id="L20">            return null;</span>
+        }
+
+<span class="fc" id="L23">        UserResponse.UserResponseBuilder userResponse = UserResponse.builder();</span>
+
+<span class="fc" id="L25">        userResponse.roles( mapRolesToStrings( user.getRoles() ) );</span>
+<span class="fc" id="L26">        userResponse.id( user.getId() );</span>
+<span class="fc" id="L27">        userResponse.email( user.getEmail() );</span>
+<span class="fc" id="L28">        userResponse.firstName( user.getFirstName() );</span>
+<span class="fc" id="L29">        userResponse.lastName( user.getLastName() );</span>
+<span class="fc" id="L30">        userResponse.createdAt( user.getCreatedAt() );</span>
+
+<span class="fc" id="L32">        return userResponse.build();</span>
+    }
+
+    @Override
+    public User toEntity(RegisterRequest request) {
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if ( request == null ) {</span>
+<span class="fc" id="L38">            return null;</span>
+        }
+
+<span class="fc" id="L41">        User.UserBuilder user = User.builder();</span>
+
+<span class="fc" id="L43">        user.email( request.getEmail() );</span>
+<span class="fc" id="L44">        user.password( request.getPassword() );</span>
+<span class="fc" id="L45">        user.firstName( request.getFirstName() );</span>
+<span class="fc" id="L46">        user.lastName( request.getLastName() );</span>
+
+<span class="fc" id="L48">        return user.build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+auth-service,com.smartsure.auth.mapper,UserMapperImpl,0,73,0,4,0,19,0,5,0,3
+auth-service,com.smartsure.auth.mapper,UserMapper,2,14,1,1,1,4,1,2,0,2
+auth-service,com.smartsure.auth.security,JwtAuthenticationFilter,0,100,1,7,0,28,1,7,0,4
+auth-service,com.smartsure.auth.security,JwtUtil,11,85,1,1,2,23,2,9,1,9
+auth-service,com.smartsure.auth.controller,AuthController,10,36,2,2,3,9,3,3,1,3
+auth-service,com.smartsure.auth.exception,GlobalExceptionHandler,0,73,0,2,0,15,0,6,0,5
+auth-service,com.smartsure.auth.exception,AuthServiceException,0,4,0,0,0,2,0,1,0,1
+auth-service,com.smartsure.auth.dto,ApiResponse,0,14,0,0,0,2,0,2,0,2
+auth-service,com.smartsure.auth.service,AuthServiceImpl,4,138,0,4,0,27,1,7,1,5

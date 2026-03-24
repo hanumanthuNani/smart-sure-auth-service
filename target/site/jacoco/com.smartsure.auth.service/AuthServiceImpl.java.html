@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">auth-service</a> &gt; <a href="index.source.html" class="el_package">com.smartsure.auth.service</a> &gt; <span class="el_source">AuthServiceImpl.java</span></div><h1>AuthServiceImpl.java</h1><pre class="source lang-java linenums">package com.smartsure.auth.service;
+
+import java.util.Set;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.smartsure.auth.dto.ApiResponse;
+import com.smartsure.auth.dto.LoginRequest;
+import com.smartsure.auth.dto.RegisterRequest;
+import com.smartsure.auth.dto.UserResponse;
+import com.smartsure.auth.entity.Role;
+import com.smartsure.auth.entity.RoleName;
+import com.smartsure.auth.entity.User;
+import com.smartsure.auth.exception.AuthServiceException;
+import com.smartsure.auth.mapper.UserMapper;
+import com.smartsure.auth.repository.RoleRepository;
+import com.smartsure.auth.repository.UserRepository;
+import com.smartsure.auth.security.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
+<span class="fc" id="L23">@Slf4j</span>
+@Service
+@RequiredArgsConstructor
+public class AuthServiceImpl implements AuthService {
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+
+    @Override
+    @Transactional
+    public ApiResponse&lt;UserResponse&gt; register(RegisterRequest request) {
+<span class="fc" id="L37">        log.info(&quot;Processing registration for email: {}&quot;, request.getEmail());</span>
+
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (userRepository.existsByEmail(request.getEmail())) {</span>
+<span class="fc" id="L40">            log.error(&quot;Registration failed: Email already exists - {}&quot;, request.getEmail());</span>
+<span class="fc" id="L41">            return ApiResponse.error(&quot;Email is already registered&quot;);</span>
+        }
+
+<span class="fc" id="L44">        Role customerRole = roleRepository.findByName(RoleName.ROLE_CUSTOMER)</span>
+<span class="fc" id="L45">                .orElseThrow(() -&gt; new AuthServiceException(&quot;Role not found&quot;));</span>
+
+<span class="fc" id="L47">        User user = userMapper.toEntity(request);</span>
+<span class="fc" id="L48">        user.setPassword(passwordEncoder.encode(request.getPassword())); // ✅ encoded</span>
+<span class="fc" id="L49">        user.setRoles(Set.of(customerRole)); // ✅ set BEFORE save</span>
+
+<span class="fc" id="L51">        User savedUser = userRepository.save(user);</span>
+
+<span class="fc" id="L53">        log.info(&quot;Successfully registered user: {}&quot;, request.getEmail());</span>
+<span class="fc" id="L54">        return ApiResponse.success(&quot;User registered successfully&quot;, userMapper.toResponse(savedUser));</span>
+    }
+
+    @Override
+    public ApiResponse&lt;UserResponse&gt; login(LoginRequest request) {
+<span class="fc" id="L59">        log.info(&quot;Processing login for email: {}&quot;, request.getEmail());</span>
+
+<span class="fc" id="L61">        User user = userRepository.findByEmail(request.getEmail())</span>
+<span class="fc" id="L62">                .orElseThrow(() -&gt; new AuthServiceException(&quot;Invalid credentials&quot;));</span>
+
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) { // ✅ proper check</span>
+<span class="fc" id="L65">            log.error(&quot;Login failed: Invalid password for {}&quot;, request.getEmail());</span>
+<span class="fc" id="L66">            throw new AuthServiceException(&quot;Invalid credentials&quot;);</span>
+        }
+
+<span class="fc" id="L69">        List&lt;String&gt; roles = user.getRoles().stream()</span>
+<span class="pc" id="L70">                .map(role -&gt; role.getName().name())</span>
+<span class="fc" id="L71">                .toList();</span>
+<span class="fc" id="L72">        String token = jwtUtil.generateToken(user.getEmail(), roles);</span>
+
+<span class="fc" id="L74">        UserResponse userResponse = userMapper.toResponse(user);</span>
+<span class="fc" id="L75">        userResponse.setToken(token);</span>
+
+<span class="fc" id="L77">        log.info(&quot;Successfully logged in user: {}&quot;, request.getEmail());</span>
+<span class="fc" id="L78">        return ApiResponse.success(&quot;Login successful&quot;, userResponse);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,6 @@
+projectKey=com.smartsure:auth-service
+serverUrl=http://localhost:9000
+serverVersion=26.3.0.120487
+dashboardUrl=http://localhost:9000/dashboard?id=com.smartsure%3Aauth-service
+ceTaskId=f4b1930c-188d-44f3-92d8-07f1997e823f
+ceTaskUrl=http://localhost:9000/api/ce/task?id=f4b1930c-188d-44f3-92d8-07f1997e823f

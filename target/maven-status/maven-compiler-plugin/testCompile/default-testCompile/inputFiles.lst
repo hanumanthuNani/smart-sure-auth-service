@@ -1,0 +1,8 @@
+D:\smartsure_backend\auth-service\src\test\java\com\smartsure\auth\controller\AuthControllerTest.java
+D:\smartsure_backend\auth-service\src\test\java\com\smartsure\auth\security\JwtUtilTest.java
+D:\smartsure_backend\auth-service\src\test\java\com\smartsure\auth\exception\GlobalExceptionHandlerTest.java
+D:\smartsure_backend\auth-service\src\test\java\com\smartsure\auth\service\AuthServiceImplTest.java
+D:\smartsure_backend\auth-service\src\test\java\com\smartsure\auth\security\JwtAuthenticationFilterTest.java
+D:\smartsure_backend\auth-service\src\test\java\com\smartsure\auth\repository\UserRepositoryTest.java
+D:\smartsure_backend\auth-service\src\test\java\com\smartsure\auth\dto\DtoTest.java
+D:\smartsure_backend\auth-service\src\test\java\com\smartsure\auth\mapper\UserMapperTest.java
